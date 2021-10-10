@@ -23,9 +23,8 @@
                                 change="onChange" 
                                 liveChange="onLiveChange"
                                 value="{
-                                    path: 'view>/currency',
-                                    type: 'sap.ui.model.type.Currency'
-                                }" />
+                                    path: 'inputCurrency>/krwInput'
+                                }"/>
                             <layoutData>
                                 <layout:GridData span="XL11 L10 M6 S12" />
                             </layoutData>
@@ -50,8 +49,7 @@
                                 change="onChange" 
                                 liveChange="onLiveChange"
                                 value="{
-                                    path: 'inputCurrency>/usdInput',
-                                    type: 'sap.ui.model.type.Currency'
+                                    path: 'inputCurrency>/usdInput'
                                 }" />
                             <layoutData>
                                 <layout:GridData span="XL3 L4 M6 S12" />
@@ -65,8 +63,7 @@
                                 change="onChange" 
                                 liveChange="onLiveChange"
                                 value="{
-                                    path: 'inputCurrency>/euroInput',
-                                    type: 'sap.ui.model.type.Currency'
+                                    path: 'inputCurrency>/euroInput'
                                 }" />
                             <layoutData>
                                 <layout:GridData span="XL3 L4 M6 S12" />
@@ -80,8 +77,7 @@
                                 change="onChange" 
                                 liveChange="onLiveChange"
                                 value="{
-                                    path: 'inputCurrency>/jpyInput',
-                                    type: 'sap.ui.model.type.Currency'
+                                    path: 'inputCurrency>/jpyInput'
                                 }" />
                             <layoutData>
                                 <layout:GridData span="XL3 L4 M6 S12" />
@@ -130,11 +126,13 @@
                                 number="{tableData>rate}"
                                 unit="원" />
                             <ObjectNumber 
+                                number="{tableData>value}" />
+                            <!-- <ObjectNumber 
                                 number="{
                                     parts: [{path: 'tableData>value'}, {path: 'tableData>currencyType'}],
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: true}
-                                }" />
+                                }" /> -->
                         </cells>
                     </ColumnListItem>
                 </items>

@@ -49,7 +49,6 @@
                                 id="input2" 
                                 change="onChange" 
                                 liveChange="onLiveChange"
-                                editable="false"
                                 value="{
                                     path: 'inputData>/usdInput',
                                     formatter: '.formatNumber'
@@ -65,7 +64,6 @@
                                 id="input3"
                                 change="onChange" 
                                 liveChange="onLiveChange"
-                                editable="false"
                                 value="{
                                     path: 'inputData>/eurInput',
                                     formatter: '.formatNumber'
@@ -81,7 +79,6 @@
                                 id="input4"
                                 change="onChange" 
                                 liveChange="onLiveChange"
-                                editable="false"
                                 value="{
                                     path: 'inputData>/jpyInput',
                                     formatter: '.formatNumber'
@@ -137,7 +134,11 @@
                                 unit="원" />
                             <ObjectNumber 
                                 number="{
-                                    path: 'tableData>value',
+                                    parts: [
+                                        {path: 'tableData>value'},
+                                        {path: 'tableData>currencyType'}
+                                    ],
+                                    type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: true},
                                     formatter: '.formatNumber'
                                 }" />

@@ -185,6 +185,15 @@ sap.ui.define([
         // 각 키 입력, 삭제, 붙여넣기 등의 사용자 상호 작용에 의해 입력 값이 변경될 때 발생합니다.
         onLiveChange: function (oEvent) {
             var inputItem = oEvent.getSource();
+            var oInputDataModel = this.getView().getModel("inputData").getProperty("/");
+            var amountInputField = this.getView().byId("input1");
+            var aCurrency = [1196.00, 1382.82, 1069.67];
+
+            if (amountInputField.getValue()) {
+                oInputDataModel.usdInput = amountInputField.getValue() / aCurrency[0];
+                oInputDataModel.eurInput = amountInputField.getValue() / aCurrency[1];
+                oInputDataModel.jpyInput = amountInputField.getValue() / aCurrency[2];
+            }
 
             // var regex = /[^0-9]/g; 
             // var result = inputItem.getValue().replace(regex, "");
@@ -196,7 +205,8 @@ sap.ui.define([
 				style: "float",
 				decimals: 2 		// short는 정수형이므로 decomals 0은 의미가 없음
 			});
-			return oFloatFormatter.format(value);
+            return oFloatFormatter.format(value);
+            
 
 			// var oCurrencyFormatter = NumberFormat.getCurrencyInstance({
 			// 	currencyCode: false,

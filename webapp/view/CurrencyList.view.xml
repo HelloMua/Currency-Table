@@ -23,7 +23,8 @@
                                 change="onChange" 
                                 liveChange="onLiveChange"
                                 value="{
-                                    path: 'inputCurrency>/krwInput'
+                                    path: 'inputData>/krwInput',
+                                    formatter: '.formatNumber'
                                 }"/>
                             <layoutData>
                                 <layout:GridData span="XL11 L10 M6 S12" />
@@ -48,8 +49,10 @@
                                 id="input2" 
                                 change="onChange" 
                                 liveChange="onLiveChange"
+                                editable="false"
                                 value="{
-                                    path: 'inputCurrency>/usdInput'
+                                    path: 'inputData>/usdInput',
+                                    formatter: '.formatNumber'
                                 }" />
                             <layoutData>
                                 <layout:GridData span="XL3 L4 M6 S12" />
@@ -62,8 +65,10 @@
                                 id="input3"
                                 change="onChange" 
                                 liveChange="onLiveChange"
+                                editable="false"
                                 value="{
-                                    path: 'inputCurrency>/euroInput'
+                                    path: 'inputData>/eurInput',
+                                    formatter: '.formatNumber'
                                 }" />
                             <layoutData>
                                 <layout:GridData span="XL3 L4 M6 S12" />
@@ -76,8 +81,10 @@
                                 id="input4"
                                 change="onChange" 
                                 liveChange="onLiveChange"
+                                editable="false"
                                 value="{
-                                    path: 'inputCurrency>/jpyInput'
+                                    path: 'inputData>/jpyInput',
+                                    formatter: '.formatNumber'
                                 }" />
                             <layoutData>
                                 <layout:GridData span="XL3 L4 M6 S12" />
@@ -113,7 +120,7 @@
                         <Text text="환율" />
                     </Column>
                     <Column width="35%" hAlign="End">
-                        <Text text="금액" />
+                        <Text text="환산금액" />
                     </Column>
                 </columns>
 
@@ -123,16 +130,17 @@
                             <ObjectIdentifier title="{tableData>currencyName}" />
                             <ObjectNumber 
                                 visible="{= ${tableData>rate} !== null}"
-                                number="{tableData>rate}"
+                                number="{
+                                    path: 'tableData>rate',
+                                    formatter: '.formatNumber'
+                                }"
                                 unit="원" />
                             <ObjectNumber 
-                                number="{tableData>value}" />
-                            <!-- <ObjectNumber 
                                 number="{
-                                    parts: [{path: 'tableData>value'}, {path: 'tableData>currencyType'}],
-                                    type: 'sap.ui.model.type.Currency',
-                                    formatOptions: {showMeasure: true}
-                                }" /> -->
+                                    path: 'tableData>value',
+                                    formatOptions: {showMeasure: true},
+                                    formatter: '.formatNumber'
+                                }" />
                         </cells>
                     </ColumnListItem>
                 </items>

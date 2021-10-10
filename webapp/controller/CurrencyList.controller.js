@@ -7,11 +7,44 @@ sap.ui.define([
     "use strict";
 
     return controller.extend("sap.ui.demo.walkthrough.CurrencyList", {
+
         onInit: function () {
-            var oViewModel = new JSONModel({
-                currency: "KRW"
-            });
-            this.getView().setModel(oViewModel, "view");
+            // var oViewModel = new JSONModel({
+            //     "KRW" : [1000, "KRW"],
+            //     "USD" : [0.84, "USD"],
+            //     "EUR" : [0.72, "EUR"],
+            //     "JPY" : [100, "JPY"]
+            // });
+            // this.getView().setModel(oViewModel, "view");
+
+            // var oViewModel = new JSONModel({
+            //     currency : "KRW"
+            // });
+            // this.getView().setModel(oViewModel, "view");
+
+        //     var oInputModel1 = new JSONModel([
+        //         {
+        //             input : null,
+        //             currencyType : "USD" 
+        //         }
+        //     ]);
+        //     this.getView().setModel(oInputModel1, "inputData1");
+
+        //     var oInputModel2 = new JSONModel([
+        //         {
+        //             input : null,
+        //             currencyType : "ERO" 
+        //         }
+        //     ]);
+        //     this.getView().setModel(oInputModel2, "inputData2");
+
+        //    var oInputModel3 = new JSONModel([
+        //         {
+        //             input : null,
+        //             currencyType : "JPY" 
+        //         }
+        //     ]);
+        //     this.getView().setModel(oInputModel3, "inputData3");
 
             var oTableModel = new JSONModel([
                 {
@@ -35,17 +68,22 @@ sap.ui.define([
             ]);
             this.getView().setModel(oTableModel, "tableData");
 
-            var oTableDataModel = this.getView().getModel("tableData").getProperty("/");
 
             var oInputModel = new JSONModel({
                     krwInput  : null,
                     usdInput  : null,
-                    euroInput : null,
+                    eurInput  : null,
                     jpyInput  : null
-                }
-            );
+            });
 
-            this.getView().setModel(oInputModel, "inputCurrency");
+            // var oInputModel = new JSONModel({
+            //         krwInput  : [null, "KRW"],
+            //         usdInput  : [null, "USD"],
+            //         eurInput  : [null, "EUR"],
+            //         jpyInput  : [null, "JPY"]
+            // });
+
+            this.getView().setModel(oInputModel, "inputData");
         },
 
         onPress: function () {
@@ -100,24 +138,38 @@ sap.ui.define([
 
             // getProperty의 쓰임새??
             var oTableDataModel = this.getView().getModel("tableData").getProperty("/");
+            var oInputDataModel = this.getView().getModel("inputData").getProperty("/");
 
-            oTableDataModel[0].rate = amountInputField2.getValue();
-            oTableDataModel[1].rate = amountInputField3.getValue();
-            oTableDataModel[2].rate = amountInputField4.getValue();
+            var aCurrency = [1196.00, 1382.82, 1069.67];
 
-            var sParseFloatPrice = parseFloat(amountInputField.getValue());
-            // console.log(isNaN(amountInputField.getValue()));
-            console.log(isNaN(sParseFloatPrice));
+            oInputDataModel.usdInput = amountInputField.getValue() / aCurrency[0];
+            oInputDataModel.eurInput = amountInputField.getValue() / aCurrency[1];
+            oInputDataModel.jpyInput = amountInputField.getValue() / aCurrency[2];  
+
+            // for (var i=0; i<oInputDataModel.length; i++) {
+            //     oInputDataModel[i] = amountInputField.getValue() / aCurrency[i];
+            //     console.log(isNaN(amountInputField.getValue()));
+            // }
+            console.log(oInputDataModel);
+
+            // oTableDataModel[0].value = amountInputField2.getValue();
+            // oTableDataModel[1].value = amountInputField3.getValue();
+            // oTableDataModel[2].value = amountInputField4.getValue();
+            
+            oTableDataModel[0].value = oInputDataModel.usdInput;
+            oTableDataModel[1].value = oInputDataModel.eurInput;
+            oTableDataModel[2].value = oInputDataModel.jpyInput;    
+
+            console.log(isNaN(amountInputField.getValue()));
 
             for (var i=0; i<oTableDataModel.length; i++) {
-                // var sParseFloatRate = parseFloat(oTableDataModel[i].rate);
-                console.log(isNaN(oTableDataModel[i].rate));
                 // js는 문자열에 숫자를 곱하면 숫자 / 숫자타입에 문자열을 더하면 문자
-                // oTableDataModel[i].value = oTableDataModel[i].rate * amountInputField.getValue();
-                oTableDataModel[i].value = oTableDataModel[i].rate * sParseFloatPrice; 
-                
+                oTableDataModel[i].rate = oTableDataModel[i].value * amountInputField.getValue();
             }
             console.log(oTableDataModel);
+
+            this.getView().getModel("inputData").refresh(true);
+            this.getView().getModel("tableData").refresh(true);
         },
 
         // 입력 필드의 텍스트가 변경되고 포커스가 입력 필드를 벗어나거나 Enter 키를 누르면 시작됩니다.
@@ -140,22 +192,22 @@ sap.ui.define([
         },
 
         formatNumber : function (value) {
-			// var oFloatFormatter = NumberFormat.getFloatInstance({
-			// 	style: "short",
-			// 	// decimals: 0 		// short는 정수형이므로 decomals 0은 의미가 없음
-			// });
-			// return oFloatFormatter.format(value);
-
-			var oCurrencyFormatter = NumberFormat.getCurrencyInstance({
-				currencyCode: false,
-				customCurrencies: {
-					myCurrency: {
-						isoCode: "KRW",
-						decimals: 0
-					}
-				}
+			var oFloatFormatter = NumberFormat.getFloatInstance({
+				style: "float",
+				decimals: 2 		// short는 정수형이므로 decomals 0은 의미가 없음
 			});
-			return oCurrencyFormatter.format(value, "myCurrency");
+			return oFloatFormatter.format(value);
+
+			// var oCurrencyFormatter = NumberFormat.getCurrencyInstance({
+			// 	currencyCode: false,
+			// 	customCurrencies: {
+			// 		myCurrency: {
+			// 			isoCode: "KRW",
+			// 			decimals: 0
+			// 		}
+			// 	}
+			// });
+			// return oCurrencyFormatter.format(value, "myCurrency");
 		}
     });
 });

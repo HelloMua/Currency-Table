@@ -177,9 +177,9 @@ sap.ui.define([
             var inputItem = oEvent.getSource();
 
             // 정규식 사용
-            // var regex = /[^0-9]/g;      // 0-9 : 숫자, [^문자] : 문자 제외, g: 모든 문자 검색
-            // var result = inputItem.getValue().replace(regex, "");       // regex(/정규표현식/)에 매칭되는 항목을 ""(대체문자열)로 바꿈
-            // inputItem.setValue(result);
+            var regex = /[^0-9]/g;      // 0-9 : 숫자, [^문자] : 문자 제외, g: 모든 문자 검색
+            var result = inputItem.getValue().replace(regex, "");       // regex(/정규표현식/)에 매칭되는 항목을 ""(대체문자열)로 바꿈
+            inputItem.setValue(result);
         },
 
         // 각 키 입력, 삭제, 붙여넣기 등의 사용자 상호 작용에 의해 입력 값이 변경될 때 발생합니다.
@@ -195,9 +195,9 @@ sap.ui.define([
                 oInputDataModel.jpyInput = amountInputField.getValue() / aCurrency[2];
             }
 
-            // var regex = /[^0-9]/g; 
-            // var result = inputItem.getValue().replace(regex, "");
-            // inputItem.setValue(result);
+            var regex = /[^0-9]/g; 
+            var result = inputItem.getValue().replace(regex, "");
+            inputItem.setValue(result);
         },
 
         formatNumber : function (value) {
@@ -206,7 +206,6 @@ sap.ui.define([
 				decimals: 2 		// short는 정수형이므로 decomals 0은 의미가 없음
 			});
             return oFloatFormatter.format(value);
-            
 
 			// var oCurrencyFormatter = NumberFormat.getCurrencyInstance({
 			// 	currencyCode: false,

@@ -1,0 +1,144 @@
+<mvc:View
+    controllerName="sap.ui.demo.walkthrough.controller.CurrencyList"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:form="sap.ui.layout.form"
+	xmlns:layout="sap.ui.layout"
+    height="100%">
+    <f:DynamicPage>
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader>
+                <!-- layout="ResponsiveGridLayout" 프로퍼티 값을 부여하여야 그리스 세팅가능 -->
+                <form:SimpleForm layout="ResponsiveGridLayout">
+                    <form:content>
+                        <!-- HBox, FlexBox 등 박스단위로 컨트롤하는게 편리 -->
+                        <!-- HBox가 차지하는 Grid 크기를 아래 LayoutData 속성을 부여하여 세팅 -->
+                        <HBox alignItems="Center">
+                            <Label text="금액 :" />
+                            <Input 
+                                class="sapUiTinyMarginBegin" 
+                                id="input1" 
+                                change="onChange" 
+                                liveChange="onLiveChange"
+                                value="{
+                                    path: 'view>/currency',
+                                    type: 'sap.ui.model.type.Currency'
+                                }" />
+                            <layoutData>
+                                <layout:GridData span="XL11 L10 M6 S12" />
+                            </layoutData>
+                        </HBox>
+                        <HBox alignItems="Center">
+                            <Button text="변환" id="button" press=".onPress" />
+                            <layoutData>
+                                <layout:GridData span="XL1 L2 M6 S12" />
+                            </layoutData>
+                        </HBox>
+                        <HBox alignItems="Center">
+                            <Text text="환율정보" />
+                            <layoutData>
+                                <layout:GridData span="XL3 L12 M12 S12" />
+                            </layoutData>
+                        </HBox>
+                        <HBox alignItems="Center">
+                            <Label text="달러 :" />
+                            <Input 
+                                class="sapUiTinyMarginBegin" 
+                                id="input2" 
+                                change="onChange" 
+                                liveChange="onLiveChange"
+                                value="{
+                                    path: 'inputCurrency>/usdInput',
+                                    type: 'sap.ui.model.type.Currency'
+                                }" />
+                            <layoutData>
+                                <layout:GridData span="XL3 L4 M6 S12" />
+                            </layoutData>
+                        </HBox>
+                        <HBox alignItems="Center">
+                            <Label text="유로 :" />
+                            <Input 
+                                class="sapUiTinyMarginBegin" 
+                                id="input3"
+                                change="onChange" 
+                                liveChange="onLiveChange"
+                                value="{
+                                    path: 'inputCurrency>/euroInput',
+                                    type: 'sap.ui.model.type.Currency'
+                                }" />
+                            <layoutData>
+                                <layout:GridData span="XL3 L4 M6 S12" />
+                            </layoutData>
+                        </HBox>
+                        <HBox alignItems="Center">
+                            <Label text="엔화 :" />
+                            <Input 
+                                class="sapUiTinyMarginBegin" 
+                                id="input4"
+                                change="onChange" 
+                                liveChange="onLiveChange"
+                                value="{
+                                    path: 'inputCurrency>/jpyInput',
+                                    type: 'sap.ui.model.type.Currency'
+                                }" />
+                            <layoutData>
+                                <layout:GridData span="XL3 L4 M6 S12" />
+                            </layoutData>
+                        </HBox>
+                    </form:content>
+                </form:SimpleForm>
+            </f:DynamicPageHeader>
+        </f:header>
+
+        <!-- DynamicPage Content -->
+        <f:content>
+            <Table
+                id="currencyTable"
+                items="{
+                    path: 'tableData>/'
+                }">
+                <!-- Table Header -->
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <content>
+                            <Text text="환전내역" />
+                        </content>
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                <!-- Table Content -->
+                <columns>
+                    <Column width="30%" hAlign="Center">
+                        <Text text="화폐" />
+                    </Column>
+                    <Column width="35%" hAlign="Center">
+                        <Text text="환율" />
+                    </Column>
+                    <Column width="35%" hAlign="End">
+                        <Text text="금액" />
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <ObjectIdentifier title="{tableData>currencyName}" />
+                            <ObjectNumber 
+                                visible="{= ${tableData>rate} !== null}"
+                                number="{tableData>rate}"
+                                unit="원" />
+                            <ObjectNumber 
+                                number="{
+                                    parts: [{path: 'tableData>value'}, {path: 'tableData>currencyType'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: true}
+                                }" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

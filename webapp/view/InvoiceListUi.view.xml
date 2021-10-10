@@ -1,0 +1,172 @@
+<mvc:View
+    controllerName="sap.ui.demo.walkthrough.controller.InvoiceListUi"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:t="sap.ui.table">
+    <t:Table
+        id="uiTable"
+        rows="{invoice>/Invoices}"
+        rowSelectionChange="onRowSelectionChange">
+        <t:extension>
+            <OverflowToolbar>
+                <Title text="Ui Table Example"/>
+                <ToolbarSpacer/>
+                <Input
+                    id="inputColumn"
+                    width="20%"
+                    placeholder="fixed column count"
+                    tooltip="fixed column count"/>
+                <Input
+                    id="inputRow"
+                    width="20%"
+                    placeholder="fixed row count"
+                    tooltip="fixed row count"/>
+                <Input
+                    id="inputButtomRow"
+                    width="20%"
+                    placeholder="fixed bottom row count"
+                    tooltip="fixed bottom row count"/>
+                <Button id="button" text="Apply" press=".onColumnFreezeButton"/>
+            </OverflowToolbar>
+        </t:extension>
+
+        <t:columns>
+            <t:Column width="11rem">
+                <t:multiLabels>
+                    <Label visible="false" />
+                    <Label text="{i18n>columnName}" textAlign="Center" width="100%"/>
+                </t:multiLabels>
+                <t:template>
+                    <Text text="{invoice>ProductName}" />
+                </t:template>
+            </t:Column>
+            
+            <t:Column width="11rem">
+                <t:multiLabels>
+                    <Label visible="false" />
+                    <Label text="{i18n>columnStatus}" textAlign="Center" width="100%"/>
+                </t:multiLabels>
+                <t:template>
+                    <Text text="{
+                        path: 'invoice>Status',
+                        formatter: '.formatter.statusText'
+                    }" />
+                </t:template>
+            </t:Column>
+
+            <t:Column headerSpan="3" width="11rem">
+                <t:multiLabels>
+                    <Label text="Ship Information" textAlign="Center" width="100%"/>
+                    <Label text="{i18n>columnSupplier}" textAlign="Center" width="100%"/>
+                </t:multiLabels>
+                <t:template>
+                    <Text text="{invoice>ShipperName}" />
+                </t:template>
+            </t:Column>
+
+            <t:Column width="11rem">
+                <t:multiLabels>
+                    <Label visible="false" />
+                    <Label text="{i18n>columnSupplierID}" textAlign="Center" width="100%"/>
+                </t:multiLabels>
+                <t:template>
+                    <Text text="{invoice>SupplierID}" />
+                </t:template>
+            </t:Column>
+
+            <t:Column width="11rem">
+                <t:multiLabels>
+                    <Label visible="false" />
+                    <Label text="{i18n>columnShippedDate}" textAlign="Center" width="100%"/>
+                </t:multiLabels>
+                <t:template>
+                    <Text text="{
+                        path: 'invoice>ShippedDate',
+                        type: 'sap.ui.model.type.Date',
+                        formatOptions: {
+                            style: 'long',
+                            source: {
+                                pattern: 'yyyy-MM-ddTHH:mm:ss'
+                            }
+                        }
+                    }" />
+                </t:template>
+            </t:Column>
+
+            <t:Column headerSpan="3" width="11rem">
+                <t:multiLabels>
+                    <Label text="Product Information" textAlign="Center" width="100%"/>
+                    <Label text="{i18n>columnQuantity}" textAlign="Center" width="100%"/>
+                </t:multiLabels>
+                <t:template>
+                    <Text text="{invoice>Quantity}" />
+                </t:template>
+            </t:Column>
+
+            <t:Column width="11rem">
+                <t:multiLabels>
+                    <Label visible="false" />
+                    <Label text="{i18n>columnWeightMeasure}" textAlign="Center" width="100%"/>
+                </t:multiLabels>
+                <t:template>
+                    <Text text="{invoice>WeightMeasure}" />
+                </t:template>
+            </t:Column>
+
+            <t:Column width="11rem">
+                <t:multiLabels>
+                    <Label visible="false" />
+                    <Label text="{i18n>columnWeightUnit}" textAlign="Center" width="100%"/>
+                </t:multiLabels>
+                <t:template>
+                    <Text text="{invoice>WeightUnit}" />
+                </t:template>
+            </t:Column>
+
+            <t:Column width="11rem">
+                <t:multiLabels>
+                    <Label visible="false" />
+                    <Label text="{i18n>columnPrice}" textAlign="Center" width="100%"/>
+                </t:multiLabels>
+                <t:template>
+                    <ObjectNumber
+                        number="{
+                            parts: [{path: 'invoice>ExtendedPrice'}, {path: 'view>/currency'}],
+                            type: 'sap.ui.model.type.Currency',
+                            formatOptions: {
+                                showMeasure: false
+                            }
+                        }" 
+                        unit="{view>/currency}"
+                        state="{= ${invoice>ExtendedPrice} > 50 ? 'Error' : 'Success'}"/>
+                </t:template>
+            </t:Column>
+
+            <t:Column width="11rem">
+                <t:multiLabels>
+                    <Label visible="false" />
+                    <Label text="{i18n>columnCategory}" textAlign="Center" width="100%"/>
+                </t:multiLabels>
+                <t:template>
+                    <Text text="{invoice>Category}" />
+                </t:template>
+            </t:Column>
+
+            <t:Column width="11rem">
+                <t:multiLabels>
+                    <Label visible="false" />
+                    <Label text="{i18n>columnDescription}" textAlign="Center" width="100%"/>
+                </t:multiLabels>
+                <t:template>
+                    <Text text="{invoice>Description}" />
+                </t:template>
+            </t:Column>
+        </t:columns>
+
+        <t:footer>
+            <OverflowToolbar id="infobar">
+                <Label text="Footer of the Table"/>
+            </OverflowToolbar>
+        </t:footer>
+    </t:Table>
+</mvc:View>

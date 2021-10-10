@@ -1,0 +1,30 @@
+sap.ui.define([
+    "sap/ui/core/mvc/Controller",
+    "sap/m/MessageToast",
+    "sap/ui/core/Fragment"
+], function (Controller, MessageToast, Fragment) {
+    'use strict';
+
+    return Controller.extend("sap.ui.demo.walkthrough.controller.HelloPanel", {
+        onShowHello: function () {
+            // read msgfrom i18n model
+            var oBundle = this.getView().getModel("i18n").getResourceBundle();
+            var sRecipient = this.getView().getModel().getProperty("/recipient/name");
+            var sMsg = oBundle.getText("helloMsg", [sRecipient]);
+
+            // Show message
+            MessageToast.show(sMsg);
+        },
+
+        onOpenDialog: function () {
+            this.getOwnerComponent().openHelloDialog();
+        },
+
+        onCustomButton: function (oEvent, sInfo) {
+            var sText = sInfo;
+
+            oEvent.getSource().setText(sText);
+            // this.getView().byId("myCustomButton").setText(sText);
+        }
+    });
+});

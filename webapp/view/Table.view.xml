@@ -10,7 +10,7 @@
     heignt="100%">
     <t:Table
         id="uiTable"
-        rows="{view>/table}"
+        rows="{view>/}"
         selectionMode="MultiToggle"
         visibleRowCount="10"
         paste="onPaste">
@@ -24,56 +24,60 @@
             </OverflowToolbar>
         </t:extension>
         <t:columns>
-            <t:Column width="25%">
+            <t:Column width="25%" hAlign="Center">
                 <Label text="상품명" />
                 <t:template>
-                    <MultiInput 
-                        value="{productName}"
+                    <Input 
+                        id="input1"
+                        value="{view>productName}"
                         showValueHelp="false">
-                    </MultiInput>
+                    </Input>
                 </t:template>
             </t:Column>
-            <t:Column width="25%">
+            <t:Column width="25%" hAlign="Center">
                 <Label text="일자"/>
                 <t:template>
-                    <DatePicker 
+                    <DatePicker
+                        id="input2"
                         value="{
-                            path: 'date',
-                            type: 'sap.ui.model.type.Date',
-                            formatOptions: {source: {pattern: 'timestamp'}}
+                            path: 'view>date',
+                            type: 'sap.ui.model.type.Date'
                         }"
                         placeholder="YYYY년MM월DD일" />
                 </t:template>
             </t:Column>
-            <t:Column width="12%">
+            <t:Column width="12%" hAlign="Center">
                 <Label text="카테고리" />
                 <t:template>
                     <Select 
-                        selectedKey="{category>type}"
+                        id="input3"
+                        selectedKey="{view>category}"
                         items="{
                             path: 'category>/categories',
                             templateShareable: false
                         }">
-                        <core:Item text="{category>type}" key="" />
+                        <core:Item text="{category>type}" key="{category>key}" />
                     </Select>
                 </t:template>
             </t:Column>
-            <t:Column width="19%">
+            <t:Column width="19%" hAlign="Center">
                 <Label text="수량" />
                 <t:template>
-                    <MultiInput 
-                        value="{count}"
+                    <Input 
+                        id="input4"
+                        value="{view>count}"
                         showValueHelp="false">
-                    </MultiInput>
+                    </Input>
                 </t:template>
             </t:Column>
-            <t:Column width="19%">
+            <t:Column width="19%" hAlign="Center">
                 <Label text="가격" />
                 <t:template>
-                    <MultiInput 
-                        value="{price}"
+                    <Input 
+                        id="input5"
+                        value="{view>price}"
                         showValueHelp="false">
-                    </MultiInput>
+                    </Input>
                 </t:template>
             </t:Column>
         </t:columns>
@@ -81,7 +85,10 @@
 
     <Table 
         id="mtable"
-        inset="false">
+        inset="false"
+        items="{
+            path: 'view>/table'
+        }">
         <headerToolbar>
             <OverflowToolbar>
                 <content>
@@ -112,11 +119,11 @@
         <items>
             <ColumnListItem>
                 <cells>
-                    <Text text="" />
-                    <Text text="" />
-                    <Text text="" />
-                    <Text text="" />
-                    <Text text="" />
+                    <Text text="{view>productName}" />
+                    <Text text="{view>date}" />
+                    <Text text="{view>category}" />
+                    <Text text="{view>count}" />
+                    <Text text="{view>price}" />
                     <Text text="" />
                 </cells>
             </ColumnListItem>

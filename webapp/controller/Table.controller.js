@@ -1,15 +1,11 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
-    "../model/formatter",
-    "sap/ui/core/routing/History",
-    "sap/ui/table/RowSettings",
-	"sap/ui/thirdparty/jquery"
-], function (controller, JSONModel, formatter, History, RowSettings, jQuery) {
+    "sap/m/MessageBox"
+], function (controller, JSONModel, MessageBox) {
     "use strict";
 
     return controller.extend("sap.ui.demo.walkthrough.controller.Table", {
-        formatter: formatter,
         
         onInit: function () {
             var oViewModel = new JSONModel({
@@ -44,18 +40,21 @@ sap.ui.define([
             this.getView().setModel(oCategoryModel, "category");
         },
 
-        onAddButton: function (oEvent) {
-            var button = oEvent.getSource();
-            var context = button.getBindingContext("modelname");
-            var datetype = context.getProperty("Datetype");
+        onPressAddRow: function () {
+            var oModel = this.getView().getModel("view"),
+			    line = oModel.oData.table[1]; //Just add to the end of the table a line like the second line
+			oModel.oData.table.push(line);
+			oModel.refresh();
         },
 
-        onInitButton: function () {
-
+        onPressInit: function () {
+            
         },
 
-        onPrintButton: function () {
-
+        onPressPrint: function () {
+            MessageBox.confirm("상품 내역을 생성하시겠습니까?", {
+                actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL,]
+            })
         }
 	});
 });

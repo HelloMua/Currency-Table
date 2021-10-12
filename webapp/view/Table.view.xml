@@ -17,9 +17,9 @@
             <OverflowToolbar>
                 <Title text="상품 입력" level="H2" />
                 <ToolbarSpacer />
-                <Button id="button1" text="추가" press=".onAddButton" />
-                <Button id="button2" text="초기화" press=".onInitButton" />
-                <Button id="button3" text="출력" press=".onPrintButton" />
+                <Button id="button1" text="추가" press=".onPressAddRow" />
+                <Button id="button2" text="초기화" press=".onPressInit" />
+                <Button id="button3" text="출력" press=".onPressPrint" />
             </OverflowToolbar>
         </t:extension>
         <t:columns>

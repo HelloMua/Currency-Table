@@ -1,0 +1,12 @@
+{
+    "type" : [
+        {
+            "categories" : {
+                "electronic" : "전자 제품",
+                "kitchen" : "주방",
+                "furniture" : "가구",
+                "bathroom" : "욕실 용품"
+            }
+        }
+    ]
+}

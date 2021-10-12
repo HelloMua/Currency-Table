@@ -6,7 +6,7 @@ sap.ui.define([
 ], function (controller, JSONModel, XMLView, NumberFormat) {
     "use strict";
 
-    return controller.extend("sap.ui.demo.walkthrough.CurrencyList", {
+    return controller.extend("sap.ui.demo.walkthrough.controller.CurrencyList", {
 
         onInit: function () {
             // var oViewModel = new JSONModel({
@@ -139,12 +139,14 @@ sap.ui.define([
             // getProperty의 쓰임새??
             var oTableDataModel = this.getView().getModel("tableData").getProperty("/");
             var oInputDataModel = this.getView().getModel("inputData").getProperty("/");
+            console.log(this.getView().getModel("inputData").oData);
+            console.log(oInputDataModel);
 
             var aCurrency = [1196.00, 1382.82, 1069.67];
 
-            oInputDataModel.usdInput = amountInputField.getValue() / aCurrency[0];
-            oInputDataModel.eurInput = amountInputField.getValue() / aCurrency[1];
-            oInputDataModel.jpyInput = amountInputField.getValue() / aCurrency[2];  
+            oInputDataModel.usdInput = parseFloat(amountInputField.getValue() / aCurrency[0]).toFixed(2);
+            oInputDataModel.eurInput = parseFloat(amountInputField.getValue() / aCurrency[1]).toFixed(2);
+            oInputDataModel.jpyInput = parseFloat(amountInputField.getValue() / aCurrency[2]).toFixed(2);  
 
             // for (var i=0; i<oInputDataModel.length; i++) {
             //     oInputDataModel[i] = amountInputField.getValue() / aCurrency[i];
@@ -184,16 +186,21 @@ sap.ui.define([
 
         // 각 키 입력, 삭제, 붙여넣기 등의 사용자 상호 작용에 의해 입력 값이 변경될 때 발생합니다.
         onLiveChange: function (oEvent) {
+            console.log("=== live change ===");
             var inputItem = oEvent.getSource();
             var oInputDataModel = this.getView().getModel("inputData").getProperty("/");
             var amountInputField = this.getView().byId("input1");
             var aCurrency = [1196.00, 1382.82, 1069.67];
 
             if (amountInputField.getValue()) {
-                oInputDataModel.usdInput = amountInputField.getValue() / aCurrency[0];
-                oInputDataModel.eurInput = amountInputField.getValue() / aCurrency[1];
-                oInputDataModel.jpyInput = amountInputField.getValue() / aCurrency[2];
+                oInputDataModel.usdInput = parseFloat(amountInputField.getValue() / aCurrency[0]).toFixed(2);
+                oInputDataModel.eurInput = parseFloat(amountInputField.getValue() / aCurrency[1]).toFixed(2);
+                oInputDataModel.jpyInput = parseFloat(amountInputField.getValue() / aCurrency[2]).toFixed(2);
             }
+
+            this.byId("input2").setValue(oInputDataModel.usdInput);
+            this.byId("input3").setValue(oInputDataModel.eurInput);
+            this.byId("input4").setValue(oInputDataModel.jpyInput);
 
             var regex = /[^0-9]/g; 
             var result = inputItem.getValue().replace(regex, "");
@@ -201,11 +208,19 @@ sap.ui.define([
         },
 
         formatNumber : function (value) {
-			var oFloatFormatter = NumberFormat.getFloatInstance({
+            console.log(value);
+            console.log(typeof(value));
+            
+            if(typeof(value) === 'number'){
+                var oFloatFormatter = NumberFormat.getFloatInstance({
 				style: "float",
 				decimals: 2 		// short는 정수형이므로 decomals 0은 의미가 없음
 			});
             return oFloatFormatter.format(value);
+            }
+            else{
+                return value;
+            }
 
 			// var oCurrencyFormatter = NumberFormat.getCurrencyInstance({
 			// 	currencyCode: false,

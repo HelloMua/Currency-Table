@@ -22,7 +22,8 @@
             <!-- <mvc:XMLView viewName="sap.ui.demo.walkthrough.view.HelloPanel"/>
             <mvc:XMLView viewName="sap.ui.demo.walkthrough.view.InvoiceList"/>
             <mvc:XMLView viewName="sap.ui.demo.walkthrough.view.InvoiceListUi"/> -->
-            <mvc:XMLView viewName="sap.ui.demo.walkthrough.view.CurrencyList"/>
+            <!-- <mvc:XMLView viewName="sap.ui.demo.walkthrough.view.CurrencyList"/> -->
+            <mvc:XMLView viewName="sap.ui.demo.walkthrough.view.Table"/>
         </content>
     </Page>
 </mvc:View>

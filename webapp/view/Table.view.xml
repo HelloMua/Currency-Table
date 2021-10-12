@@ -1,0 +1,124 @@
+<mvc:View
+    controllerName="sap.ui.demo.walkthrough.controller.Table"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+	xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:layout="sap.ui.layout"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:t="sap.ui.table"
+    heignt="100%">
+    <t:Table
+        rows="{view>/table}"
+        selectionMode="MultiToggle"
+        visibleRowCount="10"
+        paste="onPaste">
+        <t:extension>
+            <OverflowToolbar>
+                <Title text="상품 입력" level="H2" />
+                <ToolbarSpacer />
+                <Button id="button1" text="추가" press=".onAddButton" />
+                <Button id="button2" text="초기화" press=".onInitButton" />
+                <Button id="button3" text="출력" press=".onPrintButton" />
+            </OverflowToolbar>
+        </t:extension>
+        <t:columns>
+            <t:Column width="25%">
+                <Label text="상품명" />
+                <t:template>
+                    <MultiInput 
+                        value="{productName}"
+                        showValueHelp="false">
+                    </MultiInput>
+                </t:template>
+            </t:Column>
+            <t:Column width="25%">
+                <Label text="일자"/>
+                <t:template>
+                    <DatePicker 
+                        value="{
+                            path: 'date',
+                            type: 'sap.ui.model.type.Date',
+                            formatOptions: {source: {pattern: 'timestamp'}}
+                        }"
+                        placeholder="YYYY년MM월DD일" />
+                </t:template>
+            </t:Column>
+            <t:Column width="12%">
+                <Label text="카테고리" />
+                <t:template>
+                    <Select 
+                        selectedKey="{category>type}"
+                        items="{
+                            path: 'category>/categories',
+                            templateShareable: false
+                        }">
+                        <core:Item text="{category>type}" key="" />
+                    </Select>
+                </t:template>
+            </t:Column>
+            <t:Column width="19%">
+                <Label text="수량" />
+                <t:template>
+                    <MultiInput 
+                        value="{count}"
+                        showValueHelp="false">
+                    </MultiInput>
+                </t:template>
+            </t:Column>
+            <t:Column width="19%">
+                <Label text="가격" />
+                <t:template>
+                    <MultiInput 
+                        value="{price}"
+                        showValueHelp="false">
+                    </MultiInput>
+                </t:template>
+            </t:Column>
+        </t:columns>
+    </t:Table>
+
+    <Table 
+        id="table"
+        inset="false">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Title text="상품 내역" level="H2"/>
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column width="auto" hAlign="Center">
+                <Text text="상품명" />
+            </Column>
+            <Column width="auto" hAlign="End">
+                <Text text="카테고리" />
+            </Column>
+            <Column width="auto" hAlign="End">
+                <Text text="일자" />
+            </Column>
+            <Column width="auto" hAlign="Center">
+                <Text text="수량" />
+            </Column>
+            <Column width="auto" hAlign="Center">
+                <Text text="가격" />
+            </Column>
+            <Column width="auto" hAlign="Center">
+                <Text text="총 가격" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <Text text="" />
+                    <Text text="" />
+                    <Text text="" />
+                    <Text text="" />
+                    <Text text="" />
+                    <Text text="" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</mvc:View>

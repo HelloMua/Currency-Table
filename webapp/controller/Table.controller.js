@@ -48,7 +48,15 @@ sap.ui.define([
         },
 
         onPressInit: function () {
+            var oModel = this.getView().getModel("view");
+            oModel.oData.table.splice(0);
             
+            // var oTable = this.getView().byId("uiTable");
+            // var resetRows = oTable.destroyNoData();
+            // oModel.setData(data);
+
+            oModel.refresh();
+
         },
 
         onPressPrint: function () {

@@ -9,6 +9,7 @@
     xmlns:t="sap.ui.table"
     heignt="100%">
     <t:Table
+        id="uiTable"
         rows="{view>/table}"
         selectionMode="MultiToggle"
         visibleRowCount="10"
@@ -79,7 +80,7 @@
     </t:Table>
 
     <Table 
-        id="table"
+        id="mtable"
         inset="false">
         <headerToolbar>
             <OverflowToolbar>

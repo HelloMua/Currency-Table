@@ -101,7 +101,7 @@ sap.ui.define([
                     priceCheck = true;
                 for (var i = 0; i < aIndices.length; i++) {
                     // 선택된 상품값 하나라도 입력안 할 시, 에러창
-                    if (aModelData[aIndices[i]].productName === "" || aModelData[aIndices[i]].productName === undefined || aModelData[aIndices[i]].date === undefined || aModelData[aIndices[i]].category === "" || aModelData[aIndices[i]].category === undefined || aModelData[aIndices[i]].count === "" || aModelData[aIndices[i]].count === undefined || aModelData[aIndices[i]].price === ""|| aModelData[aIndices[i]].price === undefined) {
+                    if (aModelData[aIndices[i]].productName === "" || aModelData[aIndices[i]].productName === undefined || aModelData[aIndices[i]].date === undefined || aModelData[aIndices[i]].category === "" || aModelData[aIndices[i]].count === "" || aModelData[aIndices[i]].count === undefined || aModelData[aIndices[i]].price === ""|| aModelData[aIndices[i]].price === undefined) {
                         check = false;
                     }
                     if (isNaN(Number(aModelData[aIndices[i]].count))) {
@@ -112,7 +112,6 @@ sap.ui.define([
                         // check = false;
                         priceCheck = false;
                     }
-                    console.log(">>",aModelData[i]);
                 }
                 console.log(check);
                 if (check && countCheck && priceCheck) {
@@ -122,8 +121,7 @@ sap.ui.define([
                         onClose: function (sAction) {
                             if (sAction === MessageBox.Action.OK) {
                                 var oSelectedModel = that.getView().getModel("selected");
-                                
-                                var iSelectedLength = aSelectedModelData.length;
+                                // var iSelectedLength = aSelectedModelData.length;
 
                                 // m table에 배열을 만들고, ui table에서 선택된 값만 집어넣기
                                 console.log("=== m Table로 옮기기 ===");

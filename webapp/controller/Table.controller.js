@@ -107,16 +107,16 @@ sap.ui.define([
                     countCheck = true,
                     priceCheck = true;
 
-                for (var i = 0; i < aModelData.length; i++) {
+                for (var i = 0; i < aSelectedModelData.length; i++) {
                     // 선택된 상품값 하나라도 입력안 할 시, 에러창
-                    if (aModelData[i].productName == "" || aModelData[i].date === undefined || aModelData[i].category == "" || aModelData[i].count == "" || aModelData[i].price == "") {
+                    if (aSelectedModelData[i].productName == "" || aSelectedModelData[i].date === undefined || aSelectedModelData[i].category == "" || aSelectedModelData[i].count == "" || aSelectedModelData[i].price == "") {
                         check = false;
                     }
-                    if (isNaN(Number(aModelData[i].count))) {
+                    if (isNaN(Number(aSelectedModelData[i].count))) {
                         // check = false;
                         countCheck = false;
                     }
-                    if (isNaN(Number(aModelData[i].price))) {
+                    if (isNaN(Number(aSelectedModelData[i].price))) {
                         // check = false;
                         priceCheck = false;
                     }
@@ -156,7 +156,6 @@ sap.ui.define([
                             }
                         }
                     })
-                    //  this.rCallAlertBack.bind(this), "Confirmation");
                 } else if (check === false) {
                     MessageBox.alert("상품 값을 제대로 입력해주세요.", {
                         actions: [MessageBox.Action.OK]

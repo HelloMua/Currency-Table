@@ -4,13 +4,18 @@ sap.ui.define([
     "sap/m/MessageBox",
      "sap/ui/core/Locale",
     "sap/ui/core/LocaleData",
-    "sap/ui/model/type/Currency"
-], function (controller, JSONModel, MessageBox, Locale, LocaleData, Currency) {
+    "sap/ui/model/type/Currency",
+    "sap/ui/core/format/NumberFormat"
+], function (controller, JSONModel, MessageBox, Locale, LocaleData, Currency, NumberFormat) {
     "use strict";
 
     return controller.extend("sap.ui.demo.walkthrough.controller.Table", {
         
         onInit: function () {
+            // Register the view with the message manager
+            // var oView = this.getView();
+            // sap.ui.getCore().getMessageManager().registerObject(oView, true);
+
             var oViewModel = new JSONModel([{}]);
             this.getView().setModel(oViewModel, "view");
 
@@ -64,11 +69,11 @@ sap.ui.define([
 
             oModel.oData.splice(0);
 
-            if (oTableDataModel.length === 0) {
-                MessageBox.alert("선택된 리스트가 없습니다.", {
-                    actions: [MessageBox.Action.OK]
-                })
-            }
+            // if (oTableDataModel.length === 0) {
+            //     MessageBox.alert("선택된 리스트가 없습니다.", {
+            //         actions: [MessageBox.Action.OK]
+            //     })
+            // }
 
             // for (var i=0; i<oTableDataModel.length; i++) {
                 // oTableDataModel.table.pop();
@@ -83,95 +88,97 @@ sap.ui.define([
         },
 
         onPressPrint: function () {
-
-            MessageBox.confirm("상품 내역을 생성하시겠습니까?", this.rCallAlertBack.bind(this), "Confirmation");
-
-        },
-
-        rCallAlertBack: function () {
             var that = this;
             var aIndices = this.getView().byId("uiTable").getSelectedIndices();
+
+            var oModel = that.getView().getModel("view");
+            var oSelectedModel = that.getView().getModel("selected");
+            
+            var aModelData = oModel.getProperty("/");
+            var aSelectedModelData = that.getView().getModel("selected").getProperty("/");
+            var iSelectedLength = aSelectedModelData.length;
 
             if (aIndices.length < 1) {
                 MessageBox.alert("상품을 선택해주세요.", {
                     actions: [MessageBox.Action.OK]
                 })
             } else {
-                var oModel = that.getView().getModel("view");
-                var oSelectedModel = that.getView().getModel("selected");
-                
-                var aModelData = oModel.getProperty("/");
-                var aSelectedModelData = that.getView().getModel("selected").getProperty("/");
-                var iSelectedLength = aSelectedModelData.length;
+                var check      = true,
+                    countCheck = true,
+                    priceCheck = true;
 
-                // m table에 ui table에서 선택된 값만 집어넣기
-                for (var i = 0; i < aIndices.length; i++) {
-                    aSelectedModelData.push({});
-                    aSelectedModelData[iSelectedLength + i].productName = aModelData[aIndices[i]].productName;
-                    aSelectedModelData[iSelectedLength + i].date = aModelData[aIndices[i]].date;
-                    aSelectedModelData[iSelectedLength + i].category = aModelData[aIndices[i]].category;
-                    aSelectedModelData[iSelectedLength + i].count = aModelData[aIndices[i]].count;
-                    aSelectedModelData[iSelectedLength + i].price = aModelData[aIndices[i]].price;
+                for (var i = 0; i < aModelData.length; i++) {
+                    // 선택된 상품값 하나라도 입력안 할 시, 에러창
+                    if (aModelData[i].productName == "" || aModelData[i].date === undefined || aModelData[i].category == "" || aModelData[i].count == "" || aModelData[i].price == "") {
+                        check = false;
+                    }
+                    if (isNaN(Number(aModelData[i].count))) {
+                        check = false;
+                        countCheck = false;
+                    }
+                    if (isNaN(Number(aModelData[i].price))) {
+                        check = false;
+                        priceCheck = false;
+                    }
                 }
-                
-                // oSelectedModel.setProperty("/", aModelData);
-                oModel.refresh();
-                oSelectedModel.refresh();
-                console.log(oModel);
-                console.log(oSelectedModel);
+
+                if (check) {
+                    MessageBox.confirm("상품 내역을 생성하시겠습니까?", {
+                        actions: [MessageBox.Action.OK, MessageBox.Action.NO],
+                        emphasizedAction: MessageBox.Action.OK,
+                        onClose: function (sAction) {
+                            if (sAction === MessageBox.Action.OK) {
+                                var aIndices = that.getView().byId("uiTable").getSelectedIndices();
+
+                                var oModel = that.getView().getModel("view");
+                                var oSelectedModel = that.getView().getModel("selected");
+                                
+                                var aModelData = oModel.getProperty("/");
+                                var aSelectedModelData = that.getView().getModel("selected").getProperty("/");
+                                var iSelectedLength = aSelectedModelData.length;
+
+                                // m table에 배열을 만들고, ui table에서 선택된 값만 집어넣기
+                                console.log("=== m Table로 옮기기 ===");
+                                for (var i = 0; i < aIndices.length; i++) {
+                                    aSelectedModelData.push({});
+                                    aSelectedModelData[iSelectedLength + i].productName = aModelData[aIndices[i]].productName;
+                                    aSelectedModelData[iSelectedLength + i].date = aModelData[aIndices[i]].date;
+                                    aSelectedModelData[iSelectedLength + i].category = aModelData[aIndices[i]].category;
+                                    aSelectedModelData[iSelectedLength + i].count = aModelData[aIndices[i]].count;
+                                    aSelectedModelData[iSelectedLength + i].price = aModelData[aIndices[i]].price;
+                                }
+                                
+                                // oSelectedModel.setProperty("/", aModelData);
+                                oModel.refresh();
+                                oSelectedModel.refresh();
+                                console.log(oModel);
+                                console.log(oSelectedModel);
+                            }
+                        }
+                    })
+                    //  this.rCallAlertBack.bind(this), "Confirmation");
+                } else if (check === false) {
+                    MessageBox.alert("상품 값을 제대로 입력해주세요.", {
+                        actions: [MessageBox.Action.OK]
+                    })
+                } else if (countCheck === false) {
+                    MessageBox.alert("갯수를 숫자로 입력해주세요.", {
+                        actions: [MessageBox.Action.OK]
+                    })
+                } else if (priceCheck === false) {
+                    MessageBox.alert("가격을 숫자로 입력해주세요.", {
+                        actions: [MessageBox.Action.OK]
+                    })
+                }
             }
+        },
 
-            // var oSelectedItem = oEvent.getSource();
-            // var oContext = oSelectedItem.getBindingContext("view");
-
-            // var oModel = this.getView().getModel("view");
-            // // var oModel= this.getView().getModel("view").getData();
-            // var oTableDataModel = this.getView().getModel("view").getProperty("/").table;
-   
-            // for (var i = 0; i < oTableDataModel.length; i++) {
-            //     if (oTableDataModel[i].productName === null || oTableDataModel[i].date === null || oTableDataModel[i].count === null || oTableDataModel[i].price === null) {
-            //         MessageBox.alert("상품 값을 제대로 입력해주세요.", {
-            //             actions: [MessageBox.Action.OK]
-            //         })
-            //     }
-            // }
-
-            // for (var i = 0; i < oTableDataModel.length; i++) {
-            //     var intCount = parseInt(oTableDataModel[i].count);
-            //     var intPrice = parseInt(oTableDataModel[i].price);
-            //     console.log(typeof(inputItem1));
-            //     console.log(typeof(intPrice));
-
-            //     if (typeof(intCount) !== "number") {
-            //         MessageBox.alert("갯수를 숫자로 입력해주세요.", {
-            //             actions: [MessageBox.Action.OK]
-            //         })
-            //     }
-
-            //     if (typeof(intPrice) !== "number") {
-            //         MessageBox.alert("가격을 숫자로 입력해주세요.", {
-            //             actions: [MessageBox.Action.OK]
-            //         })
-            //     }
-            // }
-            
-            // var length = oTableDataModel.length;
-
-            // for (var i = 0; i < length; i++) {
-            //     var path = "/table/" + i + "/productName";
-            //     oTableDataModel.setProperty(path, "");
-            // }
-
-            // for (var i = 0; i < oTableDataModel.length; i++) {
-
-            //     this.byId("input1").setValue(oTableDataModel[i].productName);
-            //     this.byId("input2").setValue(oTableDataModel[i].date);
-            //     this.byId("input3").setValue(oTableDataModel[i].category);
-            //     this.byId("input4").setValue(oTableDataModel[i].count);
-            //     this.byId("input5").setValue(oTableDataModel[i].price);
-            // }
-            
-            
+        formatNumber : function (value) {
+            var oFloatFormatter = NumberFormat.getFloatInstance({
+				style: "int",
+				decimals: 0
+			});
+			return oFloatFormatter.format(value);
         },
 
         formatTotalValue: function (iCount, iPrice, sCurrCode) {

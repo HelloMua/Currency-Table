@@ -125,10 +125,13 @@
                         path: 'selected>date',
                         type: 'sap.ui.model.type.Date',
                         formatOptions: {
-                            pattern: 'yyyy-mm-dd'
+                            pattern: 'yyyy-MM-dd'
                         }
                     }" />
-                    <Text text="{selected>count}" />
+                    <Text text="{
+                        path: 'selected>count',
+                        formatter: '.formatNumber'
+                    }" />
                     <Text text="{
                         parts: [
                             {path: 'selected>price'},

@@ -17,6 +17,9 @@ sap.ui.define([
             var oSelectedModel = new JSONModel([{}]);
             this.getView().setModel(oSelectedModel, "selected");
 
+            var aSelectedModelData = this.getView().getModel("selected").getProperty("/");
+            aSelectedModelData.pop();
+
             var oCurrencyModel = new JSONModel({
                 currencyCode: "원"
             })
@@ -80,38 +83,13 @@ sap.ui.define([
         },
 
         onPressPrint: function () {
-            // MessageBox.confirm("상품 내역을 생성하시겠습니까?", {
-            //     actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL,],
-            //     onClose: function (sAction) {
-            //         if (sAction === "OK") {
-            //             // var oModel = this.getView().getModel("view");
-            //             // var oTableDataModel = this.getView().getModel("view").getData();
-            //             // var length = oModel.getData().table.length;
-
-            //             // for (var i = 0; i < length; i++) {
-            //             //     var path = "/table/" + i + "/productName";
-            //             //     oTableDataModel.setProperty(path, "");
-            //             // }
-
-            //             this.byId("input1").setValue(oTableDataModel.productName);
-            //             this.byId("input2").setValue(oTableDataModel.date);
-            //             this.byId("input3").setValue(oTableDataModel.category);
-            //             this.byId("input4").setValue(oTableDataModel.count);
-            //             this.byId("input5").setValue(oTableDataModel.price);
-
-            //             oModel.refresh();
-            //             // console.log(oModel);
-            //         }
-            //     }
-            // })
 
             MessageBox.confirm("상품 내역을 생성하시겠습니까?", this.rCallAlertBack.bind(this), "Confirmation");
-            
+
         },
 
         rCallAlertBack: function () {
             var that = this;
-
             var aIndices = this.getView().byId("uiTable").getSelectedIndices();
 
             if (aIndices.length < 1) {
@@ -120,33 +98,15 @@ sap.ui.define([
                 })
             } else {
                 var oModel = that.getView().getModel("view");
+                var oSelectedModel = that.getView().getModel("selected");
                 
                 var aModelData = oModel.getProperty("/");
                 var aSelectedModelData = that.getView().getModel("selected").getProperty("/");
                 var iSelectedLength = aSelectedModelData.length;
 
-                // ui table에 입력값 집어넣기
-                aModelData.push({ 
-                    productName : aModelData.productName, 
-                    date        : aModelData.date, 
-                    category    : aModelData.category, 
-                    count       : aModelData.count, 
-                    price       : aModelData.price
-                });
-
-                //m table 배열 생성
-                for (var i = 0; aIndices.length; i++) {
-                    aSelectedModelData.push({
-                        productName : "", 
-                        date        : "",
-                        category    : "",
-                        count       : "",
-                        price       : ""
-                    })
-                }
-
                 // m table에 ui table에서 선택된 값만 집어넣기
                 for (var i = 0; i < aIndices.length; i++) {
+                    aSelectedModelData.push({});
                     aSelectedModelData[iSelectedLength + i].productName = aModelData[aIndices[i]].productName;
                     aSelectedModelData[iSelectedLength + i].date = aModelData[aIndices[i]].date;
                     aSelectedModelData[iSelectedLength + i].category = aModelData[aIndices[i]].category;

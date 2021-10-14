@@ -16,14 +16,11 @@ sap.ui.define([
             // var oView = this.getView();
             // sap.ui.getCore().getMessageManager().registerObject(oView, true);
 
-            var oViewModel = new JSONModel([{}]);
+            var oViewModel = new JSONModel([]);
             this.getView().setModel(oViewModel, "view");
 
-            var oSelectedModel = new JSONModel([{}]);
+            var oSelectedModel = new JSONModel([]);
             this.getView().setModel(oSelectedModel, "selected");
-
-            var aSelectedModelData = this.getView().getModel("selected").getProperty("/");
-            aSelectedModelData.pop();
 
             var oCurrencyModel = new JSONModel({
                 currencyCode: "원"
@@ -139,13 +136,24 @@ sap.ui.define([
 
                                 // m table에 배열을 만들고, ui table에서 선택된 값만 집어넣기
                                 console.log("=== m Table로 옮기기 ===");
-                                for (var i = 0; i < aIndices.length; i++) {
-                                    aSelectedModelData.push({});
-                                    aSelectedModelData[iSelectedLength + i].productName = aModelData[aIndices[i]].productName;
-                                    aSelectedModelData[iSelectedLength + i].date = aModelData[aIndices[i]].date;
-                                    aSelectedModelData[iSelectedLength + i].category = aModelData[aIndices[i]].category;
-                                    aSelectedModelData[iSelectedLength + i].count = aModelData[aIndices[i]].count;
-                                    aSelectedModelData[iSelectedLength + i].price = aModelData[aIndices[i]].price;
+                                for (var i = 0; i < aIndices.length; i++) {       
+                                    var electronic = that.getView().getModel("category").getProperty("/")["categories"][0]["type"];
+                                    if (aModelData[aIndices[i]].category == "" || aModelData[aIndices[i]].category == undefined) {
+                                        aModelData[aIndices[i]].category = electronic;
+                                    }                    
+
+                                    aSelectedModelData.push({
+                                        productName: aModelData[aIndices[i]].productName,
+                                        date: aModelData[aIndices[i]].date,
+                                        category: aModelData[aIndices[i]].category,
+                                        count: aModelData[aIndices[i]].count,
+                                        price: aModelData[aIndices[i]].price
+                                    });
+                                    // aSelectedModelData[iSelectedLength + i].productName = aModelData[aIndices[i]].productName;
+                                    // aSelectedModelData[iSelectedLength + i].date = aModelData[aIndices[i]].date;
+                                    // aSelectedModelData[iSelectedLength + i].category = aModelData[aIndices[i]].category;
+                                    // aSelectedModelData[iSelectedLength + i].count = aModelData[aIndices[i]].count;
+                                    // aSelectedModelData[iSelectedLength + i].price = aModelData[aIndices[i]].price;
                                 }
                                 
                                 // oSelectedModel.setProperty("/", aModelData);

@@ -100,10 +100,10 @@
             <Column width="auto" hAlign="Center">
                 <Text text="상품명" />
             </Column>
-            <Column width="auto" hAlign="End">
+            <Column width="auto" hAlign="Center">
                 <Text text="카테고리" />
             </Column>
-            <Column width="auto" hAlign="End">
+            <Column width="auto" hAlign="Center">
                 <Text text="일자" />
             </Column>
             <Column width="auto" hAlign="Center">

@@ -56,7 +56,7 @@
                             path: 'category>/categories',
                             templateShareable: false
                         }">
-                        <core:Item text="{category>type}" key="{category>key}" />
+                        <core:Item text="{category>type}" key="{category>type}" />
                     </Select>
                 </t:template>
             </t:Column>
@@ -87,7 +87,7 @@
         id="mtable"
         inset="false"
         items="{
-            path: 'view>/table'
+            path: 'selected>/'
         }">
         <headerToolbar>
             <OverflowToolbar>
@@ -119,12 +119,31 @@
         <items>
             <ColumnListItem>
                 <cells>
-                    <Text text="{view>productName}" />
-                    <Text text="{view>date}" />
-                    <Text text="{view>category}" />
-                    <Text text="{view>count}" />
-                    <Text text="{view>price}" />
-                    <Text text="" />
+                    <Text text="{selected>productName}" />
+                    <Text text="{selected>category}" />
+                    <Text text="{
+                        path: 'selected>date',
+                        type: 'sap.ui.model.type.Date',
+                        formatOptions: {
+                            pattern: 'yyyy-mm-dd'
+                        }
+                    }" />
+                    <Text text="{selected>count}" />
+                    <Text text="{
+                        parts: [
+                            {path: 'selected>price'},
+                            {path: 'currency>/currencyCode'}
+                        ],
+                        type: 'sap.ui.model.type.Currency'
+                    }" />
+                    <Text text="{
+                        parts: [
+                            {path: 'selected>count'},
+                            {path: 'selected>price'},
+                            {path: 'currency>/currencyCode'}
+                        ],
+                        formatter: '.formatTotalValue'
+                    }" />
                 </cells>
             </ColumnListItem>
         </items>

@@ -113,16 +113,16 @@ sap.ui.define([
                         check = false;
                     }
                     if (isNaN(Number(aModelData[i].count))) {
-                        check = false;
+                        // check = false;
                         countCheck = false;
                     }
                     if (isNaN(Number(aModelData[i].price))) {
-                        check = false;
+                        // check = false;
                         priceCheck = false;
                     }
                 }
-
-                if (check) {
+                console.log(check);
+                if (check && countCheck && priceCheck) {
                     MessageBox.confirm("상품 내역을 생성하시겠습니까?", {
                         actions: [MessageBox.Action.OK, MessageBox.Action.NO],
                         emphasizedAction: MessageBox.Action.OK,

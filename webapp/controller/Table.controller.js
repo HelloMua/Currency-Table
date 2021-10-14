@@ -12,15 +12,14 @@ sap.ui.define([
     return controller.extend("sap.ui.demo.walkthrough.controller.Table", {
         
         onInit: function () {
-            // Register the view with the message manager
-            // var oView = this.getView();
-            // sap.ui.getCore().getMessageManager().registerObject(oView, true);
-
             var oViewModel = new JSONModel([]);
             this.getView().setModel(oViewModel, "view");
 
             var oSelectedModel = new JSONModel([]);
             this.getView().setModel(oSelectedModel, "selected");
+
+            // var aSelectedModelData = this.getView().getModel("selected").getProperty("/");
+            // aSelectedModelData.pop();
 
             var oCurrencyModel = new JSONModel({
                 currencyCode: "원"
@@ -51,7 +50,7 @@ sap.ui.define([
         },
 
         onPressAddRow: function () {
-            
+ 
             this.getView().getModel("view").getProperty("/").push({});
             
             this.getView().getModel("view").refresh(true);
@@ -87,13 +86,10 @@ sap.ui.define([
         onPressPrint: function () {
             var that = this;
             var aIndices = this.getView().byId("uiTable").getSelectedIndices();
-
-            var oModel = that.getView().getModel("view");
-            var oSelectedModel = that.getView().getModel("selected");
-            
+            console.log(aIndices);
+            var oModel = this.getView().getModel("view");
             var aModelData = oModel.getProperty("/");
-            var aSelectedModelData = that.getView().getModel("selected").getProperty("/");
-            var iSelectedLength = aSelectedModelData.length;
+            var aSelectedModelData = this.getView().getModel("selected").getProperty("/");
 
             if (aIndices.length < 1) {
                 MessageBox.alert("상품을 선택해주세요.", {
@@ -103,20 +99,20 @@ sap.ui.define([
                 var check      = true,
                     countCheck = true,
                     priceCheck = true;
-
-                for (var i = 0; i < aSelectedModelData.length; i++) {
+                for (var i = 0; i < aIndices.length; i++) {
                     // 선택된 상품값 하나라도 입력안 할 시, 에러창
-                    if (aSelectedModelData[i].productName == "" || aSelectedModelData[i].date === undefined || aSelectedModelData[i].category == "" || aSelectedModelData[i].count == "" || aSelectedModelData[i].price == "") {
+                    if (aModelData[aIndices[i]].productName === "" || aModelData[aIndices[i]].productName === undefined || aModelData[aIndices[i]].date === undefined || aModelData[aIndices[i]].category === "" || aModelData[aIndices[i]].category === undefined || aModelData[aIndices[i]].count === "" || aModelData[aIndices[i]].count === undefined || aModelData[aIndices[i]].price === ""|| aModelData[aIndices[i]].price === undefined) {
                         check = false;
                     }
-                    if (isNaN(Number(aSelectedModelData[i].count))) {
+                    if (isNaN(Number(aModelData[aIndices[i]].count))) {
                         // check = false;
                         countCheck = false;
                     }
-                    if (isNaN(Number(aSelectedModelData[i].price))) {
+                    if (isNaN(Number(aModelData[aIndices[i]].price))) {
                         // check = false;
                         priceCheck = false;
                     }
+                    console.log(">>",aModelData[i]);
                 }
                 console.log(check);
                 if (check && countCheck && priceCheck) {
@@ -125,13 +121,8 @@ sap.ui.define([
                         emphasizedAction: MessageBox.Action.OK,
                         onClose: function (sAction) {
                             if (sAction === MessageBox.Action.OK) {
-                                var aIndices = that.getView().byId("uiTable").getSelectedIndices();
-
-                                var oModel = that.getView().getModel("view");
                                 var oSelectedModel = that.getView().getModel("selected");
                                 
-                                var aModelData = oModel.getProperty("/");
-                                var aSelectedModelData = that.getView().getModel("selected").getProperty("/");
                                 var iSelectedLength = aSelectedModelData.length;
 
                                 // m table에 배열을 만들고, ui table에서 선택된 값만 집어넣기
